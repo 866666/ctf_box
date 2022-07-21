@@ -1,26 +1,5 @@
----
-title: "SQL注入 Union 万能密码绕过登录验证"
-date: 2022-07-19T08:48:13+08:00
-draft: false
-weight: 2
-description: "SQL注入 Union 万能密码绕过登录验证"
-images: []
-resources:
-- name: featured-image
-  src: featured-image.jpg
-- name: featured-image-preview
-  src: featured-image.jpg
 
-tags: ["CTF", "WEB","SQL注入"]
-categories: ["documentation"]
-
-lightgallery: true
-
----
-
-SQL注入 Union 万能密码绕过登录验证
-
-<!--more-->
+# SQL注入 Union 万能密码绕过登录验证
 
 ## 常见的绕过登录验证方式：
 
