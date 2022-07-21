@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-#
 # awd文件监控脚本
 # author：说书人
