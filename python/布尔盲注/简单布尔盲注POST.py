@@ -1,7 +1,7 @@
 import requests
 import time
 
-url = "http://cd61fccc-1099-413e-b55b-8da97ad30c2d.node4.buuoj.cn:81/index.php";
+url = "http://192.168.15.80:20005/index.php";
 
 result = ""
 num = 0  # 用了来判断是不是flag已经拼完整了
