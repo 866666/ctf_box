@@ -69,13 +69,10 @@ def main():
             if i == self_id:
                 continue
             # 修改ip地址格式
-            # ip = "192.168." + str(i) + ".101"
-            ip = "192.168.15.80"
-            # ip = "172.16.100."+str(i)
-            # 修改题目端口
-            # port = "9999"
-            port = i
-            flag = attack(ip, str(i))
+            server_ip = "192.168.15.80"
+            # 开始攻击
+            flag = attack(server_ip, str(i))
+            # 提交flag
             submit('192.168.15.80', 19999, flag)
             time.sleep(1)
         print("[\033[0;30;43mROUND\033[0m] " + time.strftime("%Y-%m-%d %H:%M:%S",
