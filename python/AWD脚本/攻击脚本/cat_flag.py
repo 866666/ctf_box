@@ -26,6 +26,8 @@ def print_attack_result(ip, port, flag): return print(
 def print_exc_result(ip, port, p, e): return print("[\033[0;37;41mERROR\033[0m] \033[0;32m" + ip +
                                                    "\033[0m:\033[0;34m" + port + "\033[0m" + p + "\033[0;31m" + str(e) + "\033[0m")
 
+#########################################################################
+
 
 def attack(ip, port):
     try:
