@@ -1,0 +1,14 @@
+<?php
+header("Content-type: text/html; charset=utf-8");
+
+$decode = "此处为加密代码";
+
+$decode = gzuncompress(gzinflate(base64_decode(strrev($decode))));
+$fopen = fopen('out.txt',"wb");
+
+fwrite($fopen,$decode);
+
+fclose($fopen);
+//解密后会放在同目录下的out.txt里面
+echo "解码成功<a href='out.txt'>点我查看</a>";
+?>
