@@ -356,7 +356,8 @@ mysql>update MYTABLE set sex=”f”where name=’hyq’;
 - **load_file()**
 
   ```mysql
-  select load_file('/etc/passwd');
+  select cast(load_file('/flag') as char);#输出格式转化为字符
+  select convert(load_file("/flag"),char);#输出格式转化为字符
   ```
 
 - **load data infile**
