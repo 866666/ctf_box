@@ -77,8 +77,8 @@ def main():
             server_ip = "192.168.15.80"
             # 开始攻击
             flag_text = attack(server_ip, str(i))
-            # 提交flag
-            if flag_text != False:  # 判断成功提交
+            # 获取flag成功后
+            if flag_text != False:
                 submit(server_ip, str(i), flag_text)
             time.sleep(1)
         print("[\033[0;30;43mROUND\033[0m] " + time.strftime("%Y-%m-%d %H:%M:%S",

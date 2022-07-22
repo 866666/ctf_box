@@ -105,6 +105,6 @@ initialization = {'ok': 'false'}
 ListDir(web_dir)
 GetHash()
 while True:
-    print(time.ctime()+"   安全")
+    # print(time.ctime()+"   安全")# 监控回显
     FileMonitor()
     time.sleep(1)  # 监控间隔，按需修改
