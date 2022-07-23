@@ -1,4 +1,5 @@
-# coding=utf-8
+## coding=utf-8
+## 批量写入不死马、获取、提交flag
 import time
 import re
 import requests
@@ -122,7 +123,7 @@ def up_bsshell(ip, port, url_end, method, passwd):  # 批量上传不死马
             return False
         else:
             print("[\033[0;37;36mSUCCE\033[0m] \033[0;32m" + ip + "\033[0m:\033[0;34m" + \
-                  port + "\033[0m Shell build fail: \033[0;31m" + shell_url + "\033[0m")
+                  port + "\033[0m Shell build success: \033[0;31m" + shell_url + "\033[0m")
 
 
 def main():
