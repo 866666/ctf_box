@@ -126,7 +126,7 @@ def main():
     try:
         # 一轮中所有队伍
         for i in range(8801, 8807):
-            self_id = 8802  # 跳过自己的队伍ip/端口
+            self_id = 8807  # 跳过自己的队伍ip/端口
             if i == self_id:
                 continue
             # 构造attack参数
@@ -169,7 +169,7 @@ if __name__ == '__main__':
             print("[\033[0;30;43mROUND\033[0m] " + time.strftime("%Y-%m-%d %H:%M:%S",
                                                                  time.localtime()) + " Begin to attack")
             main()
-            time.sleep(2 * 6)
+            time.sleep(2 * 60)
     except Exception as e:
         print("[\033[0;37;41mERROR\033[0m] \033[0;37;41mMain function error, because: " + str(e) + "\033[0m")
         exit(0)

