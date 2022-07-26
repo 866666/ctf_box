@@ -20,5 +20,5 @@ def backdoor_attack(ip, url_path, method, payload):  # 命令执行漏洞
             return False
 
     except Exception as e:
-        print('\033[1;35m[后门攻击失败]\033[0m' + ip + '-->backdoor_attack()执行失败>>>>>>' + str(e))
+        print('\033[1;35m[后门攻击失败]\033[0m' + ip + '-->backdoor_attack()执行失败-->' + str(e))
         return False

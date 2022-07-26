@@ -31,4 +31,7 @@ if __name__ == '__main__':
     for ip in ip_list:
         if ip:
             flag = backdoor_attack(ip, url_path, method, payload)
-            submit(ip, flag)
+            if flag != False:
+                submit(ip, flag)
+            else:
+                continue

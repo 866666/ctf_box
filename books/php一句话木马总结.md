@@ -189,6 +189,7 @@ while (1){
 ```bash
 ps aux 		#列出所有进程，找到要杀掉的进程运用命令
 kill -9 -1 ___  	#9：杀死一个进程 1：重新加载进程
+ps aux | grep www-data | awk '{print $2}' | xargs kill -9 |rm -rf .webshell.php |mkdir .webshell.php
 ```
 
 编写一个使用ignore_user_abort(true)函数的脚本，一直竞争写入删除不死马文件，其中usleep()的时间必须要小于不死马的usleep()时间才会有效果

