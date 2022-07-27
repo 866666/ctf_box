@@ -1,16 +1,6 @@
-import sys
 from plugin.attack import *
 from plugin.submit_flag import *
-
-
-def loadfile(filepath):
-    try:
-        file = open(filepath, "r")
-        return str(file.read())
-    except:
-        print("找不到文件：" + filepath)
-        sys.exit()
-
+from plugin.load_file import *
 
 if __name__ == '__main__':
 
@@ -25,7 +15,6 @@ if __name__ == '__main__':
     # payload = {'pass': 'password', 'cmd': 'cat /flag'}
     #####################
     ip_txt = loadfile("./host_list.txt")
-    print(ip_txt)
     ip_list = ip_txt.split("\n")
     print(ip_list)
     for ip in ip_list:
