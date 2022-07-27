@@ -1,7 +1,7 @@
 import requests
 import re
 import os
-from build_shell import *
+from plugin.build_shell import *
 
 
 def backdoor_attack(ip, url_path, method, payload):  # 命令执行漏洞
@@ -27,8 +27,8 @@ def backdoor_attack(ip, url_path, method, payload):  # 命令执行漏洞
         return False
 
 
-def up_shell(ip, url_end, method, passwd):  # 上传不死马
-    url = 'http://' + ip + url_end
+def up_shell(ip, url_path, method, passwd):  # 上传不死马
+    url = 'http://' + ip + url_path
     try:  # 判断漏洞页面是否存在
         test_re = requests.get(url, timeout=3)
     except Exception as e:

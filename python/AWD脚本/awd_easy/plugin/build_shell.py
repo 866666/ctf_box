@@ -1,4 +1,4 @@
-from load_file import *
+from plugin.load_file import *
 
 
 def hex_shell(shell_path='./shell.php'):  # 将webshell转化为hex
