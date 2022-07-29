@@ -8,7 +8,7 @@ ip_start = 80
 ip_end = 81
 port_start = 8801
 port_end = 8807
-white_list = '192.168.15.80:8802'  # 白名单
+white_list = '192.168.15.80:8807'  # 白名单
 if os.path.exists('host_list.txt'):  # 重命名旧文件
     get_time = time.strftime(
         "%Y-%m-%d_%H_%M_%S", time.localtime(os.path.getmtime('host_list.txt')))
