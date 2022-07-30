@@ -22,7 +22,8 @@ def rename_file(file_name):  # 重命名旧文件
     if os.path.exists(file_name):
         get_time = time.strftime(
             "%Y-%m-%d_%H_%M_%S", time.localtime(os.path.getmtime(file_name)))
-        old_name = 'flag_list_' + str(get_time) + '.txt'
+        cut_name = file_name.replace('.txt', '_')
+        old_name = cut_name + str(get_time) + '.txt'
         try:
             os.rename(file_name, old_name)
             print('Rename file success:' + old_name)
