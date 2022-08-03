@@ -1,9 +1,9 @@
 <?php
-class Test {
-    var $p = "cat /tmp/flagoefiu4r93";
-    var $func = "system";
-}
+// class data {
+//     var $user = "admin";
+//     var $pass = "BDSwordsman";
+// }
 
-$a=new Test();
-echo serialize($a);
+$darray = ["user" => "admin","pass" => "BDSwordsman"];
+echo serialize($darray);
 ?>
